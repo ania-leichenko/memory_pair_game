@@ -40,13 +40,13 @@ window.onload = function () {
   imagesWrapper.innerHTML = htmlStr;
 
   let firstImage = null;
-
+  let countOpenedImages = 0;
+  let sumOpenedImages = 0;
   const clickHendler = (event) => {
-    if (event.target.classList.contains("front")) {
+    if (event.target.classList.contains("front") && countOpenedImages < 2) {
       const parent = event.target.parentElement.parentElement;
       parent.classList.add("hover");
-      console.log('currentImage');
-      console.dir(parent.dataset.index);
+      countOpenedImages++;
       if (firstImage === null) {
         firstImage = parent;
       } else {
@@ -55,18 +55,23 @@ window.onload = function () {
             parent.classList.add("hidden");
             firstImage.classList.add("hidden");
             firstImage = null;
-          }, 1000)
+            countOpenedImages = 0;
+            sumOpenedImages += 2;
+            if(sumOpenedImages === images.length) {
+              alert("You win");
+             }
+          }, 1000);
         } else {
           setTimeout(() => {
             parent.classList.remove("hover");
             firstImage.classList.remove("hover");
             firstImage = null;
+            countOpenedImages = 0;
           }, 1000);
         }
       }
-      console.log('firstImage');
-      console.dir(firstImage.dataset.index);
     }
+
   };
   imagesWrapper.addEventListener("click", clickHendler);
 };
